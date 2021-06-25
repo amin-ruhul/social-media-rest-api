@@ -17,6 +17,12 @@ mongoose.connect(
   }
 );
 
+// middleWire
+
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("common"));
+
 app.listen(PORT, () => {
   console.log(`server running at: http://localhost:${PORT}`);
 });
