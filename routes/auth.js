@@ -1,23 +1,24 @@
 const express = require("express");
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
-router.get("/register", async (req, res) => {
+router.post("/register", async (req, res) => {
+  const salt = await bcrypt.genSalt(10);
+  const hasPassword = await bcrypt.hash(req.body.password, salt);
   const user = await new User({
-    username: "ruhul",
-    email: "ruhul@gmail.com",
-    password: "ruhul123",
+    username: req.body.username,
+    email: req.body.email,
+    password: hasPassword,
   });
 
-  console.log("Before Save");
-  console.log(user);
-
-  const Dbuser = await user.save();
-  console.log("After Save");
-  console.log(Dbuser);
-
-  res.send("register");
+  try {
+    const dbUser = await user.save();
+    res.status(200).json(dbUser);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;
