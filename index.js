@@ -8,12 +8,17 @@ const authRoute = require("./routes/auth");
 
 const app = express();
 
-PORT = 5000;
+PORT = 8000;
 
 dotenv.config();
 mongoose.connect(
   process.env.MONGO_URL,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  },
   () => {
     console.log("connected to MongoDB");
   }
